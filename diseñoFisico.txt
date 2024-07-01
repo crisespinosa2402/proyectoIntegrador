@@ -1,0 +1,104 @@
+CREATE TABLE Provincia (
+    id_provincia INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_provincia VARCHAR(100),
+    nombre_provincia VARCHAR(100)
+);
+
+CREATE TABLE Canton (
+    id_canton INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_canton VARCHAR(100),
+    nombre_canton VARCHAR(100),
+    id_provincia INT,
+    FOREIGN KEY (id_provincia) REFERENCES Provincia(id_provincia)
+);
+
+CREATE TABLE Parroquia (
+    id_parroquia INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_parroquia VARCHAR(100),
+    nombre_parroquia VARCHAR(100),
+    id_canton INT,
+    FOREIGN KEY (id_canton) REFERENCES Canton(id_canton)
+);
+
+CREATE TABLE Zona (
+    id_Zona INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_Zona VARCHAR(100)
+);
+
+-- Crear la tabla Sub_Zona
+CREATE TABLE Sub_Zona (
+    id_subZona INT AUTO_INCREMENT PRIMARY KEY,
+    nombreSubZona VARCHAR(100),
+    nombre_zona VARCHAR(100),
+    id_Zona INT,
+    FOREIGN KEY (id_Zona) REFERENCES Zona(id_Zona)
+);
+CREATE TABLE Distrito (
+    id_Distrito INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_distrito VARCHAR(100),
+    codigo_distrito VARCHAR(50),
+    id_subZona INT,
+    FOREIGN KEY (id_subZona) REFERENCES Sub_Zona(id_subZona)
+);
+CREATE TABLE Circuito (
+    id_Circuito INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_circuito VARCHAR(100),
+    nombre_circuito VARCHAR(100),
+    id_Distrito INT,
+    FOREIGN KEY (id_Distrito) REFERENCES Distrito(id_Distrito)
+);
+
+CREATE TABLE Sub_Circuito (
+    id_subCircuito  INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_subcircuito VARCHAR(100),
+    nombre_subcircuito VARCHAR(100),
+    id_Circuito INT,
+    FOREIGN KEY (id_Circuito) REFERENCES Circuito(id_Circuito)
+);
+CREATE TABLE Infracciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    presunta_infraccion VARCHAR(255),
+    presunta_subinfraccion VARCHAR(255)
+);
+
+CREATE TABLE ICCS (
+    id_iccs INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_iccs VARCHAR(255),
+    id_subInf INT,
+    FOREIGN KEY (id_subInf) REFERENCES Infracciones(id)
+);
+
+CREATE TABLE Armas (
+    id_arma INT AUTO_INCREMENT PRIMARY KEY,
+    arma VARCHAR(255),
+    tipo_arma VARCHAR(255)
+);
+
+CREATE TABLE Detenidos (
+    id_detencion INT AUTO_INCREMENT PRIMARY KEY,
+    estado_civil VARCHAR(255),
+    edad INT,
+    sexo VARCHAR(50),
+    genero VARCHAR(50),
+    nacionalidad VARCHAR(255),
+    autoidentificacion_etnica VARCHAR(255),
+    numero_detenciones INT,
+    nivel_instruccion VARCHAR(255),
+    estatus_migratorio VARCHAR(255),
+    fecha_detencion_aprehension DATE,
+    hora_detencion_aprehension TIMESTAMP,
+    presunta_flagrancia VARCHAR(255),
+    movilizacion VARCHAR(255),
+    condicion VARCHAR(255),
+    presunta_modalidad TEXT,
+    id_parroquia INT,
+	id_subZona INT,
+    id_subCircuito INT,
+    id_iccs INT,
+    id_arma INT,
+    FOREIGN KEY (id_iccs) REFERENCES ICCS(id_iccs),
+    FOREIGN KEY (id_arma) REFERENCES Armas(id_arma),
+    FOREIGN KEY (id_parroquia) REFERENCES Parroquia(id_parroquia),
+    FOREIGN KEY (id_subZona) REFERENCES Sub_Zona(id_subZona),
+    FOREIGN KEY (id_subCircuito) REFERENCES Sub_Circuito(id_subCircuito)
+);
